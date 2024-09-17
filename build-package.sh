@@ -365,15 +365,11 @@ source "$TERMUX_SCRIPTDIR/scripts/build/termux_step_finish_build.sh"
 
 if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ]; then
 	# Setup TERMUX_APP_PACKAGE_MANAGER
-	source "$TERMUX_PREFIX/bin/termux-setup-package-manager"
+	source "$TERMUX_OLD_PREFIX/bin/termux-setup-package-manager"
 
 	# For on device builds cross compiling is not supported.
 	# Target architecture must be same as for environment used currently.
-	case "$TERMUX_APP_PACKAGE_MANAGER" in
-		"apt") TERMUX_ARCH=$(dpkg --print-architecture);;
-		"pacman") TERMUX_ARCH=$(pacman-conf Architecture);;
-	esac
-	export TERMUX_ARCH
+	export TERMUX_ARCH=$(uname -m)
 fi
 
 # Check if the package is in the compiled list
@@ -423,6 +419,7 @@ _show_usage() {
 	echo "  -o Specify directory where to put built packages. Default: output/."
 	echo "  --format Specify package output format (debian, pacman)."
 	echo "  --library Specify library of package (bionic, glibc)."
+	echo "  --package-name Specify Termux package name"
 	exit 1
 }
 
@@ -433,6 +430,17 @@ while (($# >= 1)); do
 	case "$1" in
 		--) shift 1; break;;
 		-h|--help) _show_usage;;
+		--package-name)
+			if [ $# -ge 2 ]; then
+			    shift 1
+			    if [ -z "$1" ]; then
+			        termux_error_exit "./build-package.sh: argument to '--package-name' should not be empty"
+			    fi
+			    export TERMUX_APP_PACKAGE="$1"
+			else
+			    termux_error_exit "./build-package.sh: option '--package-name' requires an argument"
+			fi
+			;;
 		--format)
 			if [ $# -ge 2 ]; then
 				shift 1
