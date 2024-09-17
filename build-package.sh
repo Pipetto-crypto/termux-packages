@@ -437,6 +437,8 @@ while (($# >= 1)); do
 			        termux_error_exit "./build-package.sh: argument to '--package-name' should not be empty"
 			    fi
 			    export TERMUX_APP_PACKAGE="$1"
+			    export TERMUX_PREFIX_CLASSICAL="/data/data/${TERMUX_APP_PACKAGE}/files/usr"
+			    export TERMUX_PREFIX="${TERMUX_PREFIX_CLASSICAL}"
 			else
 			    termux_error_exit "./build-package.sh: option '--package-name' requires an argument"
 			fi
