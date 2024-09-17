@@ -93,15 +93,15 @@ termux_step_configure_haskell_build() {
 	# shellcheck disable=SC2250,SC2154,SC2248,SC2312
 	env $AVOID_GNULIB cabal configure \
 		$TERMUX_HASKELL_OPTIMISATION \
-		--prefix="$TERMUX_PREFIX" \
+		--prefix="$TERMUX_OLD_PREFIX" \
 		--configure-option="$HOST_FLAG" \
-		--ghc-options="-optl-Wl,-rpath,$TERMUX_PREFIX/lib -optl-Wl,--enable-new-dtags" \
+		--ghc-options="-optl-Wl,-rpath,$TERMUX_OLD_PREFIX/lib -optl-Wl,--enable-new-dtags" \
 		--with-compiler="$(command -v ghc)" \
 		--with-ghc-pkg="$(command -v ghc-pkg)" \
 		--with-hsc2hs="$(command -v hsc2hs)" \
 		--hsc2hs-option=--cross-compile \
-		--extra-lib-dirs="$TERMUX_PREFIX/lib" \
-		--extra-include-dirs="$TERMUX_PREFIX/include" \
+		--extra-lib-dirs="$TERMUX_OLD_PREFIX/lib" \
+		--extra-include-dirs="$TERMUX_OLD_PREFIX/include" \
 		--with-ld="$LD" \
 		--with-strip="$STRIP" \
 		--with-ar="$AR" \

@@ -2,7 +2,7 @@
 termux_step_install_license() {
 	[[ "$TERMUX_PKG_METAPACKAGE" == 'true' ]] && return
 
-	mkdir -p "$TERMUX_PREFIX/share/doc/$TERMUX_PKG_NAME"
+	mkdir -p "$TERMUX_OLD_PREFIX/share/doc/$TERMUX_PKG_NAME"
 	local LICENSE COUNTER=0
 
 	# Was a license file specified?
@@ -22,9 +22,9 @@ termux_step_install_license() {
 			LICENSE_FILEPATH="$(basename "$LICENSE")"
 			if [[ -n ${INSTALLED_LICENSES[${LICENSE_FILEPATH}]:-} ]]; then
 				# We have already installed a license file named $(basename $LICENSE) so add a suffix to it
-				TARGET="$TERMUX_PREFIX/share/doc/${TERMUX_PKG_NAME}/${LICENSE_FILEPATH}.$((COUNTER++))"
+				TARGET="$TERMUX_OLD_PREFIX/share/doc/${TERMUX_PKG_NAME}/${LICENSE_FILEPATH}.$((COUNTER++))"
 			else
-				TARGET="$TERMUX_PREFIX/share/doc/${TERMUX_PKG_NAME}/${LICENSE_FILEPATH}"
+				TARGET="$TERMUX_OLD_PREFIX/share/doc/${TERMUX_PKG_NAME}/${LICENSE_FILEPATH}"
 				# shellcheck disable=SC2190 # this is a valid way to assign key value pairs
 				INSTALLED_LICENSES+=("${LICENSE_FILEPATH}" 'already installed')
 			fi
@@ -61,9 +61,9 @@ termux_step_install_license() {
 						for FILE in "${COMMON_LICENSE_FILES[@]}" "${EXTRA_LICENSE_FILES[@]}"; do
 							[[ -f "$TERMUX_PKG_SRCDIR/$FILE" ]] && {
 								if (( COUNTER )); then
-									cp -f "${TERMUX_PKG_SRCDIR}/$FILE" "${TERMUX_PREFIX}/share/doc/${TERMUX_PKG_NAME}/copyright.${COUNTER}"
+									cp -f "${TERMUX_PKG_SRCDIR}/$FILE" "${TERMUX_OLD_PREFIX}/share/doc/${TERMUX_PKG_NAME}/copyright.${COUNTER}"
 								else
-									cp -f "${TERMUX_PKG_SRCDIR}/$FILE" "${TERMUX_PREFIX}/share/doc/${TERMUX_PKG_NAME}/copyright"
+									cp -f "${TERMUX_PKG_SRCDIR}/$FILE" "${TERMUX_OLD_PREFIX}/share/doc/${TERMUX_PKG_NAME}/copyright"
 								fi
 								(( ++COUNTER, ++FROM_SOURCES ))
 							}
@@ -86,16 +86,16 @@ termux_step_install_license() {
 						*)        termux_error_exit "'$TERMUX_PACKAGE_LIBRARY' is not a supported libc";;
 					esac
 					if (( COUNTER )); then
-						ln -sf "$TO_LICENSE" "$TERMUX_PREFIX/share/doc/$TERMUX_PKG_NAME/copyright.${COUNTER}"
+						ln -sf "$TO_LICENSE" "$TERMUX_OLD_PREFIX/share/doc/$TERMUX_PKG_NAME/copyright.${COUNTER}"
 					else
-						ln -sf "$TO_LICENSE" "$TERMUX_PREFIX/share/doc/$TERMUX_PKG_NAME/copyright"
+						ln -sf "$TO_LICENSE" "$TERMUX_OLD_PREFIX/share/doc/$TERMUX_PKG_NAME/copyright"
 					fi
 					(( ++COUNTER ))
 				;;
 			esac
 		done <<< "${TERMUX_PKG_LICENSE//,/$'\n'}"
 		local license_files
-		license_files="$(find -L "$TERMUX_PREFIX/share/doc/$TERMUX_PKG_NAME" -maxdepth 1 \( -type f -o -type l \) -name "copyright*")"
+		license_files="$(find -L "$TERMUX_OLD_PREFIX/share/doc/$TERMUX_PKG_NAME" -maxdepth 1 \( -type f -o -type l \) -name "copyright*")"
 		[[ -n "$license_files" ]] || {
 			termux_error_exit "No LICENSE file was installed for $TERMUX_PKG_NAME"
 		}

@@ -13,7 +13,7 @@ termux_step_configure_meson() {
 		$TERMUX_PKG_SRCDIR \
 		$TERMUX_PKG_BUILDDIR \
 		--$(test "${TERMUX_PKG_MESON_NATIVE}" = "true" && echo "native-file" || echo "cross-file") $TERMUX_MESON_CROSSFILE \
-		--prefix $TERMUX_PREFIX \
+		--prefix $TERMUX_OLD_PREFIX \
 		--libdir lib \
 		--buildtype ${_meson_buildtype} \
 		${_meson_stripflag} \

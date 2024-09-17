@@ -439,7 +439,6 @@ while (($# >= 1)); do
 			    export TERMUX_APP_PACKAGE="$1"
 			    export TERMUX_PREFIX_CLASSICAL="/data/data/${TERMUX_APP_PACKAGE}/files/usr"
 			    export TERMUX_PREFIX="${TERMUX_PREFIX_CLASSICAL}"
-			    export TERMUX_INSTALL_PACKAGE=false
 			else
 			    termux_error_exit "./build-package.sh: option '--package-name' requires an argument"
 			fi
@@ -674,7 +673,7 @@ for ((i=0; i<${#PACKAGE_LIST[@]}; i++)); do
 		cd "$TERMUX_PKG_BUILDDIR"
 		termux_step_make_install
 		cd "$TERMUX_PKG_BUILDDIR"
-		termux_step_post_make_install
+		TERMUX_PREFIX=$TERMUX_OLD_PREFIX termux_step_post_make_install
 		termux_step_install_service_scripts
 		termux_step_install_license
 		cd "$TERMUX_PKG_MASSAGEDIR"
