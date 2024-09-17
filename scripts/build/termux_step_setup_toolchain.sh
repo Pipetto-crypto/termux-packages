@@ -17,7 +17,7 @@ termux_step_setup_toolchain() {
 		fi
 	elif [ "$TERMUX_PACKAGE_LIBRARY" = "glibc" ]; then
 		if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ]; then
-			TERMUX_STANDALONE_TOOLCHAIN="$TERMUX_PREFIX"
+			TERMUX_STANDALONE_TOOLCHAIN="$TERMUX_OLD_PREFIX"
 		else
 			TERMUX_STANDALONE_TOOLCHAIN="${CGCT_DIR}/${TERMUX_ARCH}"
 		fi

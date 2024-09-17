@@ -439,6 +439,7 @@ while (($# >= 1)); do
 			    export TERMUX_APP_PACKAGE="$1"
 			    export TERMUX_PREFIX_CLASSICAL="/data/data/${TERMUX_APP_PACKAGE}/files/usr"
 			    export TERMUX_PREFIX="${TERMUX_PREFIX_CLASSICAL}"
+			    export TERMUX_INSTALL_PACKAGE=false
 			else
 			    termux_error_exit "./build-package.sh: option '--package-name' requires an argument"
 			fi
