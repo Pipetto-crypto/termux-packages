@@ -2,9 +2,9 @@ TERMUX_PKG_HOMEPAGE=https://www.rust-lang.org/
 TERMUX_PKG_DESCRIPTION="Systems programming language focused on safety, speed and concurrency"
 TERMUX_PKG_LICENSE="MIT"
 TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION="1.81.0"
+TERMUX_PKG_VERSION="1.82.0"
 TERMUX_PKG_SRCURL=https://static.rust-lang.org/dist/rustc-${TERMUX_PKG_VERSION}-src.tar.xz
-TERMUX_PKG_SHA256=36217ef7e32f40a180e3d79bd666b4dfdaed49dd381023a5fb765fd12d0092ce
+TERMUX_PKG_SHA256=1276a0bb8fa12288ba6fa96597d28b40e74c44257c051d3bc02c2b049bb38210
 _LLVM_MAJOR_VERSION=$(. $TERMUX_SCRIPTDIR/packages/libllvm/build.sh; echo $LLVM_MAJOR_VERSION)
 _LLVM_MAJOR_VERSION_NEXT=$((_LLVM_MAJOR_VERSION + 1))
 _LZMA_VERSION=$(. $TERMUX_SCRIPTDIR/packages/liblzma/build.sh; echo $TERMUX_PKG_VERSION)
@@ -32,7 +32,7 @@ termux_pkg_auto_update() {
 	local api_url2="https://forge.rust-lang.org/infra/other-installation-methods.html"
 	local api_url1_r=$(curl -Ls "${api_url1}")
 	local api_url2_r=$(curl -Ls "${api_url2}")
-	local latest_version=$(echo "${api_url1_r}" | grep "html" | sed -ne "s|.*Stable: \([0-9]*\+.\+[0-9]*\+.\+[0-9]*\) Beta:.*|\1|p")
+	local latest_version=$(echo "${api_url1_r}" | sed -ne "s|.*Stable: \([0-9]*\+.\+[0-9]*\+.\+[0-9]*\) Beta:.*|\1|p")
 	if [[ "${latest_version}" == "${TERMUX_PKG_VERSION}" ]]; then
 		echo "INFO: Already up to date."
 		return
@@ -48,7 +48,7 @@ termux_pkg_auto_update() {
 
 	local uptime_now=$(cat /proc/uptime)
 	local uptime_s="${uptime_now//.*}"
-	local uptime_h_limit=4
+	local uptime_h_limit=2
 	local uptime_s_limit=$((uptime_h_limit*60*60))
 	[[ -z "${uptime_s}" ]] && [[ "$(uname -o)" != "Android" ]] && e=1
 	[[ "${uptime_s}" == 0 ]] && [[ "$(uname -o)" != "Android" ]] && e=1
@@ -132,7 +132,7 @@ termux_step_configure() {
 	# like 30 to 40 + minutes ... so lets get it right
 
 	# upstream tests build using versions N and N-1
-	local BOOTSTRAP_VERSION=1.80.0
+	local BOOTSTRAP_VERSION=1.81.0
 	if [[ "${TERMUX_ON_DEVICE_BUILD}" == "false" ]]; then
 		if ! rustup install "${BOOTSTRAP_VERSION}"; then
 			echo "WARN: ${BOOTSTRAP_VERSION} is unavailable, fallback to stable version!"
