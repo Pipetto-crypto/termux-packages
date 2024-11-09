@@ -22,7 +22,7 @@ termux_step_configure_autotools() {
 		HOST_FLAG=""
 	fi
 
-	local LIBEXEC_FLAG="--libexecdir=$TERMUX_PREFIX/libexec"
+	local LIBEXEC_FLAG="--libexecdir=$TERMUX_OLD_PREFIX/libexec"
 	if [ "$TERMUX_PKG_EXTRA_CONFIGURE_ARGS" != "${TERMUX_PKG_EXTRA_CONFIGURE_ARGS/--libexecdir=/}" ]; then
 		LIBEXEC_FLAG=""
 	fi
@@ -35,7 +35,7 @@ termux_step_configure_autotools() {
 	if [ "$TERMUX_ON_DEVICE_BUILD" = "false" ]; then
 		# Some packages provides a $PKG-config script which some configure scripts pickup instead of pkg-config:
 		mkdir "$TERMUX_PKG_TMPDIR/config-scripts"
-		for f in $TERMUX_PREFIX/bin/*config; do
+		for f in $TERMUX_OLD_PREFIX/bin/*config; do
 			if [[ -f "$f" && "$(head -c 4 "$f")" != "$(echo -ne '\0177ELF')" ]]; then
 				cp "$f" "$TERMUX_PKG_TMPDIR/config-scripts"
 			fi
